@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import OverlayMenu from "./OverlayMenu";
 import { FiMenu } from "react-icons/fi";
-import logo from "../assets/logo.png"; // Adjust path
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [forceVisible, setForceVisible] = useState(false);
+
   const lastScrollY = useRef(0);
   const timerId = useRef(null);
 
+  // Keep navbar visible on home section
   useEffect(() => {
     const homeSection = document.querySelector("#home");
 
@@ -17,7 +19,7 @@ export default function Navbar() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setForceVisible(true);
-          setVisible(true); // Always visible on homepage
+          setVisible(true);
         } else {
           setForceVisible(false);
         }
@@ -32,9 +34,9 @@ export default function Navbar() {
     };
   }, []);
 
+  // Hide/show navbar on scroll
   useEffect(() => {
     const handleScroll = () => {
-      // If on homepage, never hide navbar
       if (forceVisible) {
         setVisible(true);
         return;
@@ -43,14 +45,15 @@ export default function Navbar() {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY > lastScrollY.current) {
-        // scrolling down -> hide
+        // scrolling down
         setVisible(false);
       } else {
-        // scrolling up -> show
+        // scrolling up
         setVisible(true);
 
-        // hide again after 3sec idle
+        // auto hide after 3 sec
         if (timerId.current) clearTimeout(timerId.current);
+
         timerId.current = setTimeout(() => {
           setVisible(false);
         }, 3000);
@@ -60,9 +63,13 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (timerId.current) clearTimeout(timerId.current);
+
+      if (timerId.current) {
+        clearTimeout(timerId.current);
+      }
     };
   }, [forceVisible]);
 
@@ -74,15 +81,20 @@ export default function Navbar() {
         }`}
       >
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <img src={Logo} alt="Logo" className="w-8 h-8" />
+        <div className="flex items-center space-x-3">
+          <img
+            src={logo}
+            alt="Krish Logo"
+            className="w-10 h-10 object-contain"
+          />
+
           <div className="text-2xl font-bold text-white hidden sm:block">
             Krish
           </div>
         </div>
 
         {/* Menu Button */}
-        <div className="block lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
+        <div className="block lg:absolute lg:left-1/2 lg:-translate-x-1/2">
           <button
             onClick={() => setMenuOpen(true)}
             className="text-white text-3xl focus:outline-none"
@@ -103,7 +115,10 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <OverlayMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <OverlayMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
     </>
   );
 }
