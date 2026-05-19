@@ -48,21 +48,21 @@ export default function Projects() {
   const projects = React.useMemo(
     () => [
       {
-        title: "nk studio",
+        title: "Contract Scan",
         link: "https://contractscan.netlify.app",
-        bgColor: "#0d4d3d",
+        bgColor: "#4b99f1",
         image: isMobile ? photo1 : img1, // Mobile vs desktop image
       },
       {
-        title: "Gamily",
+        title: "CSA",
         link: "https://csa-academy.netlify.app/",
-        bgColor: "#3884d3",
+        bgColor: "#8b1e1e",
         image: isMobile ? photo2 : img2,
       },
       {
-        title: "Hungry Tiger",
-        link: "https://www.eathungrytiger.com/",
-        bgColor: "#dc9317",
+        title: "Trading Bot",
+        link: "",
+        bgColor: "#0e0116",
         image: isMobile ? photo3 : img3,
       },
     ],
